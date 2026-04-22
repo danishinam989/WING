@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wing - Product Framework</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --teal: #028090;
+  --seafoam: #00A896;
+  --mint: #02C39A;
+  --dark: #1a2e35;
+  --mid: #2d4a54;
+  --light: #f0f7f5;
+  --lighter: #f8fbfa;
+  --muted: #6b8f8a;
+  --border: #d4e8e4;
+  --white: #ffffff;
+  --amber: #e07b00;
+  --red: #c0392b;
+  --text: #1a2e35;
+  --text-light: #4a6670;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f7f6;
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+}
+
+/* HEADER */
+.header {
+  background: var(--dark);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--mint);
+  letter-spacing: -0.5px;
+}
+
+.header-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+}
+
+.header-badge {
+  background: rgba(2,192,154,0.15);
+  border: 1px solid rgba(2,192,154,0.3);
+  color: var(--mint);
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* TABS */
+.tab-nav {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  padding: 0 32px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 16px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.tab-btn:hover { color: var(--teal); }
+.tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); font-weight: 600; }
+
+/* CONTENT */
+.tab-content { display: none; padding: 28px 32px; }
+.tab-content.active { display: block; }
+
+/* STATS ROW */
+.stats-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  min-width: 100px;
+}
+
+.stat-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--teal);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* CONTROLS */
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 14px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  width: 240px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box:focus { border-color: var(--teal); }
+.search-box::placeholder { color: var(--muted); }
+
+.filter-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: var(--muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.filter-btn:hover { border-color: var(--teal); color: var(--teal); }
+.filter-btn.active { background: var(--teal); border-color: var(--teal); color: var(--white); }
+
+/* MAIN TABLE */
+.table-wrap {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+  background: var(--dark);
+  color: var(--white);
+  padding: 14px 18px;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+thead th:first-child { width: 60px; }
+thead th:nth-child(2) { width: 26%; }
+thead th:nth-child(3) { width: 34%; }
+thead th:last-child { width: 40%; }
+
+tbody tr.main-row {
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+tbody tr.main-row:hover { background: var(--lighter); }
+tbody tr.main-row.expanded { background: #edf6f4; }
+
+td { padding: 16px 18px; vertical-align: top; }
+
+.un-badge {
+  display: inline-block;
+  background: var(--teal);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 5px;
+}
+
+.audience-badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 600;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.aud-employee { background: #fff3e0; color: #b35e00; border: 1px solid #f5c07a; }
+.aud-employer { background: #e0f4f4; color: #016b7a; border: 1px solid #89cdd6; }
+.aud-system   { background: #fde8e8; color: #a02020; border: 1px solid #f5a5a5; }
+
+.need-title { font-weight: 600; color: var(--text); margin-bottom: 5px; font-size: 14px; }
+.need-desc  { font-size: 13px; color: var(--text-light); line-height: 1.5; }
+
+.feature-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 7px; }
+
+.ftag {
+  background: #e8f6f3;
+  border: 1px solid #a8ddd4;
+  color: var(--teal);
+  font-size: 12px;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.feature-names { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.benefit-text { font-size: 14px; color: var(--text); line-height: 1.6; font-style: italic; }
+.benefit-evidence { margin-top: 8px; font-size: 12px; color: var(--seafoam); font-weight: 500; }
+
+.expand-row { display: none; background: #f2faf8; border-bottom: 1px solid var(--border); }
+.expand-row.show { display: table-row; }
+
+.expand-content { padding: 16px 18px 20px; }
+.expand-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 10px; }
+
+.fdetail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+
+.fdetail-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--mint);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.fdetail-code { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; color: var(--teal); }
+.fdetail-name { font-size: 13px; font-weight: 600; color: var(--text); margin: 2px 0 5px; }
+.fdetail-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+.fdetail-evidence { margin-top: 6px; font-size: 11px; color: var(--seafoam); }
+
+.chevron { float: right; color: var(--muted); font-size: 11px; transition: transform 0.2s; margin-top: 3px; }
+.expanded .chevron { transform: rotate(180deg); }
+
+.no-results { text-align: center; padding: 50px; color: var(--muted); font-size: 15px; }
+
+/* FEATURE LIBRARY */
+.layer-section { margin-bottom: 32px; }
+
+.layer-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+.layer-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.layer-count {
+  background: var(--teal);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.layer-desc { font-size: 13px; color: var(--muted); margin-left: auto; font-style: italic; }
+
+.features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.feature-card:hover { box-shadow: 0 4px 16px rgba(2,128,144,0.1); border-color: #a8ddd4; }
+
+.fc-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+
+.fc-code {
+  background: var(--teal);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 1px;
+}
+
+.fc-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.fc-desc { font-size: 13px; color: var(--text-light); line-height: 1.5; margin-bottom: 8px; }
+.fc-evidence { font-size: 12px; color: var(--seafoam); }
+
+.fc-status {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.status-build { background: #fff3e0; color: #b35e00; border: 1px solid #f5c07a; }
+.status-planned { background: #e8f4fd; color: #1a6b9a; border: 1px solid #9ac8e8; }
+.status-exists { background: #e8f6f3; color: #016b5a; border: 1px solid #89d4c4; }
+
+/* ASSESSMENTS TAB */
+.assessment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 32px; }
+
+.assessment-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ac-header {
+  background: var(--dark);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.ac-name { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); }
+.ac-short { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+.ac-badge {
+  background: rgba(2,192,154,0.2);
+  color: var(--mint);
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 3px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ac-body { padding: 18px 20px; }
+
+.ac-section { margin-bottom: 14px; }
+.ac-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); font-weight: 600; margin-bottom: 5px; }
+.ac-section-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+
+.dimension-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.dim-tag {
+  background: var(--light);
+  border: 1px solid var(--border);
+  color: var(--teal);
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.mh-conditions { margin-top: 24px; }
+.mh-title { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
+
+.condition-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+.condition-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  border-top: 4px solid var(--teal);
+}
+
+.cond-name { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+.cond-prevalence { font-size: 22px; font-weight: 800; color: var(--teal); font-family: 'Inter', sans-serif; }
+.cond-prev-label { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.cond-desc { font-size: 13px; color: var(--text-light); line-height: 1.5; margin-bottom: 10px; }
+.cond-how { font-size: 13px; color: var(--text); line-height: 1.5; }
+.cond-how strong { color: var(--teal); }
+
+/* PSYCHOLOGY TAB */
+.psych-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+
+.psych-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: box-shadow 0.2s;
+}
+
+.psych-card:hover { box-shadow: 0 4px 20px rgba(2,128,144,0.1); }
+
+.psych-icon { font-size: 28px; margin-bottom: 10px; }
+.psych-name { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+.psych-abbr { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.psych-desc { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 12px; }
+.psych-wing { font-size: 13px; color: var(--text); line-height: 1.5; background: var(--light); border-radius: 6px; padding: 10px 12px; }
+.psych-wing strong { color: var(--teal); }
+.psych-evidence { margin-top: 10px; font-size: 12px; color: var(--seafoam); }
+
+/* SUPPORT LEVELS TAB */
+.levels-intro { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 24px; font-size: 14px; color: var(--text-light); line-height: 1.6; }
+.levels-intro strong { color: var(--teal); }
+
+.level-cards { display: flex; flex-direction: column; gap: 16px; }
+
+.level-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.level-header {
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.level-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.l0 .level-header { background: #e8f6f3; } .l0 .level-num { background: #02a87a; }
+.l1 .level-header { background: #fff8e1; } .l1 .level-num { background: #e07b00; }
+.l2 .level-header { background: #fff0e0; } .l2 .level-num { background: #c05000; }
+.l3 .level-header { background: #fde8e8; } .l3 .level-num { background: #a02020; }
+
+.level-title { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 700; color: var(--dark); }
+.level-subtitle { font-size: 13px; color: var(--text-light); margin-top: 2px; }
+.level-trigger { font-size: 13px; font-weight: 600; color: var(--text); margin-left: auto; padding: 5px 12px; border-radius: 5px; background: rgba(255,255,255,0.7); white-space: nowrap; }
+
+.level-body { padding: 18px 22px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+.level-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+
+.level-what { font-size: 14px; color: var(--text); line-height: 1.5; }
+
+.resource-list { list-style: none; }
+.resource-list li { font-size: 13px; color: var(--text); padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; }
+.resource-list li:last-child { border-bottom: none; }
+.resource-name { font-weight: 600; color: var(--dark); }
+.resource-detail { font-size: 12px; color: var(--muted); }
+
+.wing-action { font-size: 14px; color: var(--text-light); line-height: 1.5; }
+.wing-action strong { color: var(--teal); display: block; margin-bottom: 4px; }
+
+/* TECHNICAL ARCH TAB */
+.arch-grid { display: flex; flex-direction: column; gap: 20px; }
+
+.arch-layer {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.arch-layer-header {
+  background: var(--dark);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.arch-layer-num {
+  background: var(--mint);
+  color: var(--dark);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.arch-layer-name { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; color: var(--white); }
+.arch-layer-role { font-size: 13px; color: rgba(255,255,255,0.5); margin-left: auto; }
+
+.arch-layer-body { padding: 18px 20px; }
+
+.arch-components { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin-bottom: 14px; }
+
+.arch-comp {
+  background: var(--lighter);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.arch-comp-name { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 3px; }
+.arch-comp-desc { font-size: 12px; color: var(--text-light); line-height: 1.4; }
+
+.arch-flow {
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.arch-flow strong { color: var(--teal); }
+
+.arch-compliance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.comp-badge {
+  background: #e8f6f3;
+  border: 1px solid #a8ddd4;
+  color: var(--teal);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* LEGEND */
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+
+/* SECTION HEADERS */
+.section-header {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.section-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">WING</div>
+    <div class="header-sub">Wellness & Innovation Network Gateway - Product Framework</div>
+  </div>
+  <div class="header-badge">Confidential - ARC Hub ICT Application</div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('needs')">① Unmet Needs × Features × Benefits</button>
+  <button class="tab-btn" onclick="showTab('features')">② Feature Library</button>
+  <button class="tab-btn" onclick="showTab('assessments')">③ Assessments & Mental Health</button>
+  <button class="tab-btn" onclick="showTab('psychology')">④ Psychology Techniques</button>
+  <button class="tab-btn" onclick="showTab('levels')">⑤ Support Levels</button>
+  <button class="tab-btn" onclick="showTab('architecture')">⑥ Technical Architecture</button>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 1 - UNMET NEEDS -->
+<!-- ============================================================ -->
+<div class="tab-content active" id="tab-needs">
+  <div class="section-header">Unmet Needs × Features × Benefits</div>
+  <div class="section-sub">14 validated unmet needs mapped to 42 product features and their differentiating commercial benefits. Click any row to expand feature details.</div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num">14</div><div class="stat-label">Unmet Needs</div></div>
+    <div class="stat-card"><div class="stat-num">42</div><div class="stat-label">Features</div></div>
+    <div class="stat-card"><div class="stat-num" id="visibleCount">14</div><div class="stat-label">Showing</div></div>
+  </div>
+
+  <div class="controls">
+    <input class="search-box" type="text" id="searchInput" placeholder="Search needs, features, benefits..." />
+    <button class="filter-btn active" onclick="filterAudience('all',this)">All</button>
+    <button class="filter-btn" onclick="filterAudience('employee',this)">👤 Employee</button>
+    <button class="filter-btn" onclick="filterAudience('employer',this)">🏢 Employer</button>
+    <button class="filter-btn" onclick="filterAudience('system',this)">⚕️ System</button>
+    <button class="filter-btn" onclick="clearFilters()">Reset</button>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="audience-badge aud-employee">Employee</span> Employee-level need</div>
+    <div class="legend-item"><span class="audience-badge aud-employer">Employer</span> Employer-level need</div>
+    <div class="legend-item"><span class="audience-badge aud-system">System</span> System-level need</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Unmet Need</th>
+          <th>Technical Features Addressing It</th>
+          <th>Differentiating Benefit</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="no-results" id="noResults" style="display:none">No matching needs found.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 2 - FEATURE LIBRARY -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-features">
+  <div class="section-header">Complete Feature Library</div>
+  <div class="section-sub">All 42 features organised by system layer. Each feature is grounded in scientific evidence or clinical best practice.</div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num">42</div><div class="stat-label">Total Features</div></div>
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">System Layers</div></div>
+  </div>
+
+  <div id="featureLibrary"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 3 - ASSESSMENTS & MENTAL HEALTH -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-assessments">
+  <div class="section-header">Clinical Assessments & Mental Health Coverage</div>
+  <div class="section-sub">Wing uses three gold-standard validated instruments covering six dimensions of mental health and cognitive performance.</div>
+
+  <div class="assessment-grid" id="assessmentGrid"></div>
+
+  <div class="mh-conditions">
+    <div class="mh-title">Mental Health Conditions Wing Addresses</div>
+    <div class="condition-grid" id="conditionGrid"></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 4 - PSYCHOLOGY TECHNIQUES -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-psychology">
+  <div class="section-header">Evidence-Based Psychology Techniques</div>
+  <div class="section-sub">Wing's interventions and approach are grounded in six established, peer-reviewed psychological frameworks.</div>
+  <div class="psych-grid" id="psychGrid"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 5 - SUPPORT LEVELS -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-levels">
+  <div class="section-header">Support Level Framework</div>
+  <div class="section-sub">Wing's Stepped Care model delivers the right level of support to the right person at the right time - without clinical overreach.</div>
+
+  <div class="levels-intro">
+    Wing uses a <strong>four-level Stepped Care framework</strong> - the gold standard model recommended by WHO, NICE and the HSE for mental health triage. Assessment scores from DASS-21, Rosenberg and SPM combine to determine the appropriate level. The user receives a plain-language recommendation and specific next steps. No jargon. No clinical diagnosis. Just clarity.
+  </div>
+
+  <div class="level-cards" id="levelCards"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 6 - TECHNICAL ARCHITECTURE -->
+<!-- ============================================================ -->
+<div class="tab-content" id="tab-architecture">
+  <div class="section-header">Technical System Architecture</div>
+  <div class="section-sub">Wing's architecture is designed for clinical safety, complete anonymity, EU regulatory compliance and rapid enterprise deployment.</div>
+  <div class="arch-grid" id="archGrid"></div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- DATA & SCRIPTS -->
+<!-- ============================================================ -->
+<script>
+
+// ── TAB SWITCHING ──────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════════════════
+// TAB 1 DATA - UNMET NEEDS
+// ══════════════════════════════════════════════════════════════
+const needsData = [
+  { id:"UN1", audience:"employee", title:"The Cold Entry Problem", desc:"Existing tools open with clinical language causing immediate drop-off, particularly in male-dominated frontline professions.", features:[{code:"F1",name:"Profession-Aware Conversational AI Entry",desc:"AI conversation in occupational language before any assessment. Earns trust first.",evidence:"Guided modality outperforms self-guided across 117 studies"},{code:"F2",name:"Profession Category Selection",desc:"Single-tap selection drives all subsequent language and content personalisation.",evidence:"Contextual adaptation increases engagement"},{code:"F3",name:"Stigma-Free Entry Language",desc:"No 'mental health assessment' framing at entry. 'How has your week been?' instead.",evidence:"Reduces stigma barrier to first engagement"},{code:"F4",name:"90-Second Micro Check-In Mode",desc:"3-question pulse check for shift workers who won't engage with full assessment.",evidence:"Shorter interventions increase frontline completion"}], benefit:"First mental health tool frontline workers don't immediately close - because the first thing they see speaks their language and doesn't signal 'this is a mental health test.'", evidence:"Culturally targeted interventions 4× more effective than generic (76-study meta-analysis)"},
+  { id:"UN2", audience:"employee", title:"The Language & Cultural Fit Gap", desc:"No tool speaks the occupational language of trades, healthcare, retail or education workers. Content is implicitly designed for office culture.", features:[{code:"F2",name:"Profession Category Selection",desc:"Drives all language, content and example personalisation by profession type.",evidence:"More adaptation dimensions = larger effect sizes"},{code:"F9",name:"Profession-Aware Question Framing",desc:"DASS-21 items contextualised through profession-specific AI conversation. Instrument preserved underneath.",evidence:"Language fit improves assessment disclosure and accuracy"},{code:"F14",name:"Profession-Specific Behavioural Activation Library",desc:"Intervention content built around how each profession actually works and lives.",evidence:"Context-specific interventions show better feasibility and adherence"},{code:"F16",name:"Psychoeducation Content Library",desc:"What stress does to a construction worker's body vs a nurse's body. Profession-specific.",evidence:"Relevant content increases sustained engagement"}], benefit:"A construction worker, nurse and teacher each experience a product that feels built specifically for them - not a corporate wellness app they've been given access to.", evidence:"Interventions targeted to specific groups 4× more effective; effect sizes increase with each additional dimension adapted (Lancet Psychiatry, 2023)"},
+  { id:"UN3", audience:"employee", title:"The Awareness Gap - Not Knowing When To Seek Help", desc:"Employees cannot distinguish between normal stress, clinical anxiety and something requiring professional support. No tool provides a clear plain-language answer.", features:[{code:"F6",name:"DASS-21 Assessment Engine",desc:"Gold-standard validated instrument covering depression, anxiety and stress simultaneously.",evidence:"100% concordance with manual psychologist scoring on 150 users"},{code:"F7",name:"Rosenberg Self-Esteem Scale",desc:"Adds self-esteem dimension for a more complete clinical picture.",evidence:"Gold-standard validated instrument"},{code:"F10",name:"Adaptive Assessment Depth",desc:"AI determines depth based on initial responses. More thorough where needed.",evidence:"Adaptive questioning improves clinical accuracy"},{code:"F11",name:"Clear Level-of-Support Recommendation",desc:"Four plain-language levels: fine / some stress / worth attention / professional support.",evidence:"Clear escalation improves help-seeking behaviour"},{code:"F13",name:"Psychologist vs GP vs Counsellor Explainer",desc:"Removes documented confusion about who to see and when.",evidence:"Role confusion is a documented barrier to care"}], benefit:"For the first time, an employee gets a plain-language answer to 'do I need help and if so, what kind?' - closing the gap every competitor ignores.", evidence:"Even highly educated employees cannot distinguish between psychologist and psychiatrist (peer-reviewed study, 2025)"},
+  { id:"UN4", audience:"employee", title:"The Identity & Stigma Barrier", desc:"Fear of being identified by employer or colleagues prevents honest engagement. Policy-level anonymity is not trusted.", features:[{code:"F22",name:"Zero Identity Architecture",desc:"No name, no email, no device ID linked to data. Private key held only by user.",evidence:"Architecture-level anonymity vs policy-level - structurally different"},{code:"F23",name:"Age Band Collection",desc:"Age ranges not exact ages. Reduces re-identification risk in small teams.",evidence:"GDPR best practice for small cohort anonymisation"},{code:"F24",name:"Minimum Group Threshold Enforcement",desc:"Hard-coded - employer dashboard only populates above minimum completions.",evidence:"Standard anonymous survey protection"},{code:"F25",name:"Outlier Score Suppression",desc:"Critical individual scores suppressed from group data.",evidence:"Prevents identification through extreme values"},{code:"F26",name:"Time-Window Aggregation",desc:"Group data aggregated over rolling window. Prevents timing-based re-identification.",evidence:"Timing metadata is a documented re-identification vector"}], benefit:"An employee in a 10-person team knows with certainty their employer cannot identify them - not because of a policy, but because the architecture makes it structurally impossible.", evidence:"All 18 major mental health apps show linkability threats through device metadata (PMC, 2022)"},
+  { id:"UN5", audience:"employee", title:"The Irrelevant Intervention Problem", desc:"Generic breathing exercises and meditation are rejected by frontline workers as culturally inappropriate and practically impossible during their working day.", features:[{code:"F14",name:"Profession-Specific Behavioural Activation Library",desc:"Action-oriented evidence-based interventions that fit how each profession works.",evidence:"Behavioural Activation evidence-based for depression; fits trades/healthcare identity"},{code:"F15",name:"Micro-Intervention Format",desc:"All interventions in 2, 5 and 10-minute versions. Designed for shift workers.",evidence:"Shorter interventions increase completion in high-demand roles"},{code:"F17",name:"Sleep Optimisation Module",desc:"Shift-pattern aware sleep support - not generic sleep hygiene advice.",evidence:"Sleep disruption is primary stressor for frontline and healthcare workers"},{code:"F18",name:"Physical Activity Integration",desc:"Reframes intentional physical activity as mental health tool for active professions.",evidence:"Physical activity reduces depression and anxiety - evidence-based"}], benefit:"A site foreman gets practical end-of-shift decompression tools. A nurse gets micro-recovery exercises between patient contacts. Neither sees a breathing exercise they'll never use.", evidence:"Context-specific interventions show significantly better feasibility and adherence vs generic alternatives"},
+  { id:"UN6", audience:"employee", title:"The Male Engagement Gap", desc:"Men engage significantly less with digital mental health tools. Existing tools are implicitly feminised in language and approach.", features:[{code:"F5",name:"Male-Optimised Communication Mode",desc:"Direct, practical, non-clinical language register for male-dominated professions.",evidence:"Men engage significantly less with standard digital mental health tools - 117-study meta-analysis"},{code:"F1",name:"Profession-Aware Conversational AI Entry",desc:"Entry framing that resonates with self-image of trades and logistics workers.",evidence:"Identity fit is primary determinant of engagement for disengaged groups"},{code:"F3",name:"Stigma-Free Entry Language",desc:"No clinical or wellness language at entry throughout.",evidence:"Stigma is primary barrier to male mental health help-seeking"},{code:"F14",name:"Profession-Specific Behavioural Activation",desc:"Action-oriented interventions consistent with male-dominated profession identity.",evidence:"Action-oriented approaches more acceptable in male-dominated cultures"}], benefit:"The highest-risk, lowest-engagement demographic - male frontline workers - for the first time has a tool designed around how they think and talk, not how a wellness team thinks they should.", evidence:"Construction has highest male suicide rate of any industry - 75% higher than general population (CDC). Engagement gap documented across 117 studies."},
+  { id:"UN7", audience:"employee", title:"No Personal Progress Visibility", desc:"Users have no way to know if they are getting better. One-off assessments with no longitudinal tracking leave users without trajectory or motivation.", features:[{code:"F19",name:"Individual Score Trajectory Dashboard",desc:"User sees own DASS-21, Rosenberg and SPM scores over time. Visual, no jargon.",evidence:"Progress visibility increases sustained engagement"},{code:"F20",name:"Personalised Progress Narrative",desc:"AI generates plain-language summary of trend - not just a chart.",evidence:"Narrative feedback more actionable than raw scores for non-clinical users"},{code:"F21",name:"Reassessment Prompts",desc:"Evidence-based intervals - not too frequent or too infrequent.",evidence:"Optimal reassessment intervals established in DASS-21 literature"},{code:"F8",name:"SPM Cognitive Performance Tracking",desc:"User sees how mental health state affects cognitive performance over time.",evidence:"SPM is validated measure of fluid intelligence - unique personal insight"}], benefit:"An employee can see - for the first time in a workplace tool - whether their mental health is improving, stable or declining, with a plain-language explanation of what it means.", evidence:"Longitudinal tracking increases sustained behaviour change vs one-off assessments"},
+  { id:"UN8", audience:"employer", title:"Reactive Not Preventive Systems", desc:"All current tools wait for employees to self-identify. No tool surfaces organisational mental health trends before they manifest as absenteeism or incidents.", features:[{code:"F27",name:"Anonymous Group Mental Health Trend Dashboard",desc:"Aggregated DASS-21 scores by team over time. First longitudinal mental health metric.",evidence:"Mental health scores predict absenteeism in following year"},{code:"F28",name:"Cognitive Performance Trend Layer",desc:"Group SPM scores over time. Unique data layer no competitor offers.",evidence:"No competitor combines mental health and cognitive performance measurement"},{code:"F29",name:"Early Warning Signal",desc:"Plain-language alert when group scores decline consistently across periods.",evidence:"Early identification of burnout correlates with faster recovery"},{code:"F21",name:"Reassessment Prompts",desc:"Regular reassessment generates continuous trend data vs point-in-time snapshot.",evidence:"Continuous monitoring enables trend detection"}], benefit:"For the first time, an HR director sees team mental health deteriorating weeks before it shows up in sick days or incidents - and can act before the cost hits.", evidence:"Burnout scores predict absenteeism in following year (Oxford Academic). Early identification correlates with faster recovery and lower costs."},
+  { id:"UN9", audience:"employer", title:"No Measurable ROI On Wellbeing Spend", desc:"HR directors cannot demonstrate that mental health investment is working. Engagement metrics don't measure outcomes. Boards remain unconvinced.", features:[{code:"F27",name:"Anonymous Group Mental Health Trend Dashboard",desc:"Clinically validated score trends - outcome data, not activity data.",evidence:"WHO: £4 return per £1 invested in mental health when outcomes measured"},{code:"F30",name:"Intervention Effectiveness Tracking",desc:"Before/after score comparison following employer-initiated intervention.",evidence:"First tool enabling employers to measure whether actions moved the needle"},{code:"F31",name:"Industry Benchmarking",desc:"Anonymised sector benchmarks - employer sees how their team compares.",evidence:"Benchmarking drives commercial stickiness and continued engagement"},{code:"F28",name:"Cognitive Performance Trend Layer",desc:"Connects mental health investment to measurable cognitive performance outcomes.",evidence:"Links mental health directly to operational performance"}], benefit:"An HR director walks into a board meeting with before-and-after clinical score data showing their wellbeing investment moved the needle - not just that employees logged in.", evidence:"61% of wellness programs lack clear ROI goals (SHRM). Wing is the first tool that produces outcome evidence, not engagement metrics."},
+  { id:"UN10", audience:"employer", title:"GDPR & AI Act Liability", desc:"Collecting identifiable employee mental health data creates significant legal exposure. Most employers don't realise their current tools carry this risk.", features:[{code:"F22",name:"Zero Identity Architecture",desc:"No identifiable data ever collected or surfaced. Anonymous by design.",evidence:"Irish regulator fined mental health app developer €2.3M under GDPR (2025)"},{code:"F23",name:"Age Band Collection",desc:"Age ranges not exact ages - minimises re-identification risk.",evidence:"GDPR data minimisation principle"},{code:"F24",name:"Minimum Group Threshold Enforcement",desc:"Hard-coded protection - cannot be overridden by employer.",evidence:"Standard protection against small-group re-identification"},{code:"F38",name:"GDPR & EU AI Act Compliance Layer",desc:"Formal DPIA, AI Act risk classification, no behavioural monitoring.",evidence:"EU AI Act prohibits real-time emotional state monitoring in workplace"},{code:"F36",name:"AI Guardrails Layer",desc:"LLM outputs validated against safe messaging guidelines.",evidence:"Regulatory requirement for AI systems in health-adjacent contexts"}], benefit:"Wing is the only workplace mental health platform an Irish or EU legal team can approve without a lengthy data protection review - because there is no identifiable data to review.", evidence:"All 18 major mental health apps show linkability threats (PMC). EU AI Act compliance is a growing enterprise procurement requirement."},
+  { id:"UN11", audience:"employer", title:"Low Utilisation Across The Whole Workforce", desc:"Benefits are used by managers and already-engaged employees. Frontline, shift and manual workers - the majority of most workforces - are functionally unreached.", features:[{code:"F1",name:"Profession-Aware Conversational AI Entry",desc:"Entry experience designed for the least-likely-to-engage employee first.",evidence:"Guided, culturally relevant tools outperform generic self-guided alternatives"},{code:"F4",name:"90-Second Micro Check-In Mode",desc:"Removes time barrier for shift workers and physically demanding roles.",evidence:"Shorter interventions increase frontline completion rates"},{code:"F39",name:"Web-First Mobile-Optimised Platform",desc:"No app download required. Works on any device.",evidence:"App download requirement is documented adoption barrier for deskless workers"},{code:"F40",name:"No HRIS Integration Required",desc:"Deployment in days - no IT project that delays rollout to frontline.",evidence:"IT complexity delays and often prevents frontline tool deployment"},{code:"F42",name:"Offline Mode",desc:"Basic check-in available without internet - relevant for construction sites.",evidence:"Connectivity gaps are documented barrier for trades and rural healthcare workers"}], benefit:"For the first time, an employer's utilisation rate reflects their whole workforce - not just the 15% who were already open to seeking help.", evidence:"Frontline workers have lowest engagement with mental health benefits of any group (Spring Health/Forrester, 2025)."},
+  { id:"UN12", audience:"employer", title:"The Manager Blind Spot", desc:"Line managers are the earliest detection point for mental health decline but have no tools, no signal and are placed in an uncomfortable clinical role they can't fulfil.", features:[{code:"F32",name:"Anonymous Team Signal for Managers",desc:"Traffic light - Green/Amber/Red - based on anonymous team aggregates. No individual data.",evidence:"Manager support doubles likelihood of employees reporting good mental health (Mind)"},{code:"F33",name:"Manager Micro-Toolkit",desc:"3 practical industry-specific conversation starters when Amber/Red fires.",evidence:"Practical tools more effective than clinical training for non-clinical managers"},{code:"F34",name:"Manager Psychoeducation",desc:"What stress looks like in their specific industry. Framed as performance management.",evidence:"Performance framing more acceptable to managers in male-dominated industries"},{code:"F24",name:"Minimum Group Threshold Enforcement",desc:"Manager signal only fires above safe threshold - protects individuals.",evidence:"Prevents manager signals from identifying individuals in small teams"}], benefit:"A site manager or ward sister gets a simple signal their team needs support - without having to diagnose anyone or feel responsible for something they're not trained for.", evidence:"Managers are first to notice decline but least equipped to act. No competitor provides anonymous team-level signal specifically for line managers."},
+  { id:"UN13", audience:"employer", title:"No Cognitive Performance Visibility", desc:"No employer currently measures how mental health state affects workforce cognitive performance. The link between stress and decision-making quality is invisible.", features:[{code:"F8",name:"Standard Progressive Matrices (SPM)",desc:"Validated fluid intelligence assessment. Measures cognitive performance impact of mental health.",evidence:"SPM is widely validated, culture-fair cognitive assessment instrument"},{code:"F28",name:"Cognitive Performance Trend Layer",desc:"Group SPM scores over time in employer dashboard. Unique data layer.",evidence:"No competitor combines mental health and cognitive performance measurement"},{code:"F19",name:"Individual Score Trajectory Dashboard",desc:"Individual sees own cognitive performance trend alongside mental health scores.",evidence:"Self-awareness of cognitive impact drives engagement with interventions"},{code:"F30",name:"Intervention Effectiveness Tracking",desc:"Employer can see if cognitive performance recovered following a wellbeing intervention.",evidence:"Connecting intervention to cognitive outcome creates measurable operational ROI"}], benefit:"Wing is the only platform that shows an employer when their team's ability to think clearly is declining - before it shows up in errors, accidents or quality failures.", evidence:"Stress measurably impairs cognitive function (established neuroscience). No commercial tool currently measures this at group level in the workplace."},
+  { id:"UN14", audience:"system", title:"The Professional Referral Gap", desc:"Between 'I'm not fine' and 'I'm seeing a psychologist' there is a navigation gap - confusion about who to see, how to access services, and what the difference is between practitioners.", features:[{code:"F11",name:"Clear Level-of-Support Recommendation",desc:"Four plain-language levels with specific next step for each.",evidence:"Clear escalation pathway improves help-seeking behaviour"},{code:"F12",name:"Professional Referral Pathway",desc:"Level 3 users get specific actionable steps - Irish/EU healthcare pathway built in.",evidence:"Specific referral more effective than generic 'seek help' advice"},{code:"F13",name:"Psychologist vs GP vs Counsellor Explainer",desc:"Plain-language explanation of who does what and when to see them.",evidence:"Even educated employees cannot distinguish between mental health professionals (2025)"},{code:"F35",name:"Hard-Coded Crisis Protocol",desc:"Critical scores trigger immediate fixed crisis resource display. Non-AI-governed.",evidence:"Crisis escalation must be deterministic - not AI-discretionary"},{code:"F6",name:"DASS-21 Assessment Engine",desc:"Validated scoring determines triage level objectively.",evidence:"100% concordance with manual psychologist scoring on 150 users"}], benefit:"An employee who discovers they need help knows exactly what to do next, who to contact, and why - reducing the gap between awareness and action that causes most people to do nothing.", evidence:"Navigation confusion is a primary reason people don't act after recognising they need help."}
+];
+
+// ══════════════════════════════════════════════════════════════
+// TAB 2 DATA - FEATURES
+// ══════════════════════════════════════════════════════════════
+const featureLayers = [
+  {
+    name: "Entry & Engagement", icon: "🚪", count: 5,
+    desc: "Getting the right employees through the door",
+    features: [
+      { code:"F1", name:"Profession-Aware Conversational AI Entry", desc:"AI conversation in occupational language before any assessment. Earns trust before asking clinical questions. Guided modality proven to outperform self-guided.", evidence:"Guided modality outperforms self-guided across 117 studies", status:"build" },
+      { code:"F2", name:"Profession Category Selection", desc:"User selects broad work category at onboarding - single tap drives all subsequent language and content personalisation.", evidence:"More adaptation dimensions = larger effect sizes (Lancet Psychiatry)", status:"build" },
+      { code:"F3", name:"Stigma-Free Entry Language", desc:"No mention of 'mental health assessment' at entry. Framed around 'how your week has been.' Clinically equivalent - psychologically safer.", evidence:"Stigma is primary barrier to mental health tool engagement", status:"build" },
+      { code:"F4", name:"90-Second Micro Check-In Mode", desc:"3-question pulse check for shift workers who won't engage with full assessment. Feeds into longitudinal tracking.", evidence:"Shorter interventions increase frontline completion rates", status:"build" },
+      { code:"F5", name:"Male-Optimised Communication Mode", desc:"Separate language register for male-dominated professions. Direct, practical, non-clinical. Specific design required - not just toned-down wellness language.", evidence:"Men engage significantly less with standard digital mental health tools (117-study meta-analysis)", status:"build" }
+    ]
+  },
+  {
+    name: "Clinical Assessment", icon: "🧠", count: 5,
+    desc: "Gold-standard validated instruments delivered conversationally",
+    features: [
+      { code:"F6", name:"DASS-21 Assessment Engine", desc:"Gold-standard validated instrument covering depression, anxiety and stress. Original wording preserved for clinical validity. Administered invisibly within conversational flow.", evidence:"100% concordance with manual psychologist scoring on 150 users", status:"exists" },
+      { code:"F7", name:"Rosenberg Self-Esteem Scale", desc:"Integrated self-esteem assessment. Provides dimension missing from DASS-21 alone. 10-item instrument with strong cross-cultural validity.", evidence:"Gold-standard validated self-esteem instrument - widely used in occupational health research", status:"exists" },
+      { code:"F8", name:"Standard Progressive Matrices (SPM)", desc:"Fluid intelligence assessment measuring cognitive performance impact of mental health state. Culture-fair - no language or educational bias.", evidence:"Widely validated, culture-fair cognitive assessment. Unique - no competitor combines this with mental health scoring.", status:"exists" },
+      { code:"F9", name:"Profession-Aware Question Framing", desc:"DASS-21 items contextualised through profession-specific AI conversation. Clinical scoring uses original validated items underneath. Framing changes - instrument does not.", evidence:"Language fit improves assessment disclosure and accuracy. Resolves rewording validation risk.", status:"build" },
+      { code:"F10", name:"Adaptive Assessment Depth", desc:"AI determines assessment depth based on initial responses. Low-risk users get shorter experience. Higher-risk users get more thorough assessment.", evidence:"Adaptive questioning improves clinical accuracy and reduces unnecessary friction", status:"build" }
+    ]
+  },
+  {
+    name: "Triage & Guidance", icon: "🧭", count: 3,
+    desc: "Clear answers to 'do I need help and what kind?'",
+    features: [
+      { code:"F11", name:"Clear Level-of-Support Recommendation", desc:"Four plain-language levels based on combined scores: Level 0 (fine), Level 1 (self-care), Level 2 (GP), Level 3 (professional support). No clinical jargon.", evidence:"Clear escalation pathway improves help-seeking behaviour vs vague 'seek help' messages", status:"build" },
+      { code:"F12", name:"Professional Referral Pathway", desc:"Level 3 users receive specific, actionable Irish/EU service referrals - not generic advice. GP pathway, HSE resources, local services built in.", evidence:"Specific referral significantly more effective than generic 'seek help' advice", status:"build" },
+      { code:"F13", name:"Psychologist vs GP vs Counsellor Explainer", desc:"Plain-language explanation of who does what - resolving documented confusion between psychologist, psychiatrist, GP and counsellor.", evidence:"Even highly educated employees cannot distinguish between mental health professionals (2025 peer-reviewed study)", status:"build" }
+    ]
+  },
+  {
+    name: "Interventions", icon: "🎯", count: 5,
+    desc: "Evidence-based support that fits real working lives",
+    features: [
+      { code:"F14", name:"Profession-Specific Behavioural Activation Library", desc:"Action-oriented evidence-based interventions tailored by profession. Construction: end-of-shift decompression. Healthcare: micro-recovery between patients. Retail: post-shift wind-down.", evidence:"Behavioural Activation is evidence-based for depression and low mood. Action-oriented format fits non-office worker identity.", status:"build" },
+      { code:"F15", name:"Micro-Intervention Format", desc:"All interventions available in 2, 5 and 10-minute versions. No 20-minute guided sessions. Designed for shift workers with limited downtime.", evidence:"Shorter interventions increase completion rates in high-demand roles (systematic review)", status:"build" },
+      { code:"F16", name:"Psychoeducation Content Library", desc:"Profession-specific educational content - what stress does to a construction worker's body vs a nurse's vs a teacher's. Increases self-awareness without clinical framing.", evidence:"Psychoeducation is evidence-based component of CBT and Behavioural Activation programmes", status:"build" },
+      { code:"F17", name:"Sleep Optimisation Module", desc:"Shift-pattern aware sleep support - not generic sleep hygiene. Specifically designed for rotating shifts, night work and variable hours.", evidence:"Sleep disruption is primary mental health stressor for frontline and healthcare workers. Evidence-based sleep interventions exist.", status:"build" },
+      { code:"F18", name:"Physical Activity Integration", desc:"Reframes intentional physical activity as a mental health tool for professions already doing physical work. Distinguishes restorative vs occupational physical activity.", evidence:"Physical activity reduces depression and anxiety - extensive evidence base. Novel framing for active professions.", status:"build" }
+    ]
+  },
+  {
+    name: "Longitudinal Tracking", icon: "📈", count: 3,
+    desc: "Measuring whether people are actually getting better",
+    features: [
+      { code:"F19", name:"Individual Score Trajectory Dashboard", desc:"User sees own DASS-21, Rosenberg and SPM scores over time. Visual, simple, no clinical jargon. Answers 'am I getting better?' with data.", evidence:"Progress visibility increases sustained engagement with digital health interventions", status:"build" },
+      { code:"F20", name:"Personalised Progress Narrative", desc:"AI generates plain-language summary of the user's trend. 'Your stress scores have improved over 4 weeks, correlating with sleep module completions.'", evidence:"Narrative feedback more actionable than raw scores for non-clinical users", status:"build" },
+      { code:"F21", name:"Reassessment Prompts", desc:"Evidence-based reassessment intervals - not so frequent as to create familiarity effects, not so infrequent as to miss trends. Delivered as check-in invitation, not clinical requirement.", evidence:"Optimal reassessment intervals established in DASS-21 longitudinal literature", status:"build" }
+    ]
+  },
+  {
+    name: "Anonymity Architecture", icon: "🔒", count: 5,
+    desc: "Structural privacy - not just policy-level promises",
+    features: [
+      { code:"F22", name:"Zero Identity Architecture", desc:"No name, no email, no device ID linked to assessment data. Private key held only by user. Employer cannot identify any individual under any circumstances.", evidence:"All 18 major mental health apps show linkability threats despite claiming anonymity (PMC, 2022). Wing is architecturally different.", status:"exists" },
+      { code:"F23", name:"Age Band Collection", desc:"18-25, 26-35, 36-45, 46-55, 55+. Not exact age. Reduces re-identification risk in small teams while preserving demographic insight.", evidence:"GDPR data minimisation principle. Age + profession can re-identify individuals in small teams.", status:"build" },
+      { code:"F24", name:"Minimum Group Threshold Enforcement", desc:"Hard-coded - employer dashboard only populates when minimum number of completions reached. Cannot be overridden by employer configuration.", evidence:"Standard protection for anonymous survey data. Industry norm is n=5 minimum.", status:"build" },
+      { code:"F25", name:"Outlier Score Suppression", desc:"Critical individual scores do not surface in group data. Instead triggers general team-level prompt. Protects individual while still alerting organisation.", evidence:"Extreme scores in small groups are de-anonymising by nature", status:"build" },
+      { code:"F26", name:"Time-Window Aggregation", desc:"Group data aggregated over rolling window - not real-time. Prevents timing-based re-identification where completion time could identify an individual.", evidence:"Timing metadata is a documented re-identification vector in small cohort data", status:"build" }
+    ]
+  },
+  {
+    name: "Employer Intelligence Dashboard", icon: "📊", count: 5,
+    desc: "Organisational insight without individual exposure",
+    features: [
+      { code:"F27", name:"Anonymous Group Mental Health Trend Dashboard", desc:"Employer sees aggregated DASS-21 scores by team, department or profession category over time. First measurable, longitudinal mental health metric for the organisation.", evidence:"Mental health scores predict absenteeism in the following year (Oxford Academic). No competitor offers this at group level without identifiable data.", status:"build" },
+      { code:"F28", name:"Cognitive Performance Trend Layer", desc:"SPM group scores over time. Unique to Wing. Shows employer when team cognitive performance is declining before it shows up in errors or quality failures.", evidence:"Unique - no competitor combines mental health and cognitive performance group analytics.", status:"build" },
+      { code:"F29", name:"Early Warning Signal", desc:"When group scores decline consistently across two or more periods, employer receives plain-language alert. Not individual data. Not a crisis flag. An organisational signal.", evidence:"Early identification of burnout correlates with faster recovery and lower costs (multiple meta-analyses)", status:"build" },
+      { code:"F30", name:"Intervention Effectiveness Tracking", desc:"Before/after score comparison following employer-initiated intervention - after a team wellbeing day, schedule change or manager training. First time employers can measure if actions moved the needle.", evidence:"61% of wellness programs lack clear ROI goals (SHRM). This feature directly addresses the measurement gap.", status:"build" },
+      { code:"F31", name:"Industry Benchmarking", desc:"Over time, Wing builds anonymised industry benchmarks. Employer sees how their team scores compare to similar organisations in same sector.", evidence:"Benchmarking drives commercial stickiness, repeat engagement and competitive pressure to act", status:"planned" }
+    ]
+  },
+  {
+    name: "Manager Layer", icon: "👔", count: 3,
+    desc: "Giving managers a signal - not a clinical responsibility",
+    features: [
+      { code:"F32", name:"Anonymous Team Signal for Managers", desc:"Simple traffic light - Green, Amber, Red - based on anonymous team aggregates above minimum threshold. No individual data. No clinical detail.", evidence:"Manager support doubles likelihood of employees reporting good mental health (Mind Workplace Wellbeing Index)", status:"build" },
+      { code:"F33", name:"Manager Micro-Toolkit", desc:"When Amber or Red fires, manager receives 3 practical, non-clinical conversation starters relevant to their industry. Not a clinical guide. A practical tool for the next team meeting.", evidence:"Practical tools more effective than clinical training for non-clinical managers in high-pressure industries", status:"build" },
+      { code:"F34", name:"Manager Psychoeducation", desc:"Short, practical content on what stress looks like in their specific industry - what to notice, what to say, when to refer to HR. Framed as performance management, not mental health management.", evidence:"Performance framing significantly more acceptable to managers in male-dominated industries (research evidence)", status:"build" }
+    ]
+  },
+  {
+    name: "Clinical Safety & Governance", icon: "⚕️", count: 4,
+    desc: "Non-negotiable safeguards that override all other logic",
+    features: [
+      { code:"F35", name:"Hard-Coded Crisis Protocol", desc:"If assessment triggers critical threshold on any instrument - fixed, non-AI-governed escalation. Immediate display of crisis resources. No AI discretion. Clinical safety overrides all personalisation.", evidence:"Crisis escalation must be deterministic - AI discretion in crisis situations is a clinical and legal liability", status:"build" },
+      { code:"F36", name:"AI Guardrails Layer", desc:"LLM outputs validated against safe messaging guidelines for mental health. No diagnosis language. No absolute outcome claims. No advice that substitutes for professional care.", evidence:"Regulatory requirement for AI systems in health-adjacent contexts under EU AI Act", status:"build" },
+      { code:"F37", name:"Clinical Advisory Board Integration", desc:"Psychologists review and sign off on all intervention content, assessment framing and escalation thresholds. Named clinical advisors listed in product. Ongoing review cycle.", evidence:"Named clinical board is primary trust signal for enterprise procurement in health-adjacent B2B tools", status:"exists" },
+      { code:"F38", name:"GDPR & EU AI Act Compliance Layer", desc:"Formal documentation: Data Protection Impact Assessment, AI Act risk classification, no behavioural monitoring confirmation. Legal basis for processing established. Reviewed by qualified legal advisor.", evidence:"Irish regulator fined mental health app developer €2.3M under GDPR (2025). EU AI Act enforcement begins 2026.", status:"build" }
+    ]
+  },
+  {
+    name: "Access & Deployment", icon: "🚀", count: 4,
+    desc: "Reaching every employee - with no IT project required",
+    features: [
+      { code:"F39", name:"Web-First Mobile-Optimised Platform", desc:"No app download required. Works on any device with a browser. Critical for frontline workers who may not be permitted to install apps on work devices.", evidence:"App download requirement is documented adoption barrier for deskless and frontline workers", status:"exists" },
+      { code:"F40", name:"No HRIS Integration Required", desc:"Employer configures workforce profession categories at onboarding. No connection to HR systems. No IT security review required. Deployment measured in days not months.", evidence:"IT complexity and lengthy procurement cycles are primary reasons frontline tools don't reach deployment", status:"exists" },
+      { code:"F41", name:"Multi-Language Support", desc:"Irish/EU workforce is multilingual. Assessment and intervention content in English as standard. Additional languages as roadmap priority - particularly relevant for construction and hospitality sectors.", evidence:"Language is documented barrier to mental health tool adoption among migrant workers - significant in Irish construction and hospitality", status:"planned" },
+      { code:"F42", name:"Offline Mode", desc:"Basic check-in and intervention content available without internet connection. Relevant for construction sites, rural healthcare settings and logistics workers.", evidence:"Connectivity gaps are documented barrier for trades workers, rural healthcare and logistics workers in Ireland", status:"planned" }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════════════════════
+// TAB 3 DATA - ASSESSMENTS
+// ══════════════════════════════════════════════════════════════
+const assessments = [
+  {
+    name: "Depression Anxiety Stress Scales", abbr: "DASS-21", badge: "21 Items · 10 min",
+    dimensions: ["Depression", "Anxiety", "Stress"],
+    what: "The DASS-21 is the world's most widely used self-report instrument for measuring the three negative emotional states of depression, anxiety and stress. Validated across 76+ countries and dozens of occupational populations.",
+    how: "Administered conversationally through Wing's AI entry layer. Clinical scoring uses the original validated 21 items underneath. User experiences a natural conversation - not a clinical questionnaire.",
+    unique: "100% concordance with manual psychologist scoring validated on 150 users - a clinical validation finding with no equivalent among competitors.",
+    validation: "Validated across 76+ countries, multiple occupational groups including nurses, teachers and factory workers. Strong internal consistency (Cronbach's α > 0.85 across subscales)."
+  },
+  {
+    name: "Rosenberg Self-Esteem Scale", abbr: "RSES", badge: "10 Items · 3 min",
+    dimensions: ["Global Self-Worth", "Self-Acceptance"],
+    what: "The Rosenberg Self-Esteem Scale is the most widely used self-esteem measure in social science research. It assesses global self-worth by measuring both positive and negative feelings about the self.",
+    how: "Integrated into Wing's assessment sequence. Low self-esteem is a significant predictor of depression and anxiety - providing an important clinical dimension not captured by DASS-21 alone.",
+    unique: "Combined with DASS-21, Wing can distinguish whether distress is driven by situational stress or deeper self-worth issues - enabling more targeted interventions.",
+    validation: "Validated across 53 nations with strong cross-cultural equivalence. Widely used in occupational health research."
+  },
+  {
+    name: "Standard Progressive Matrices", abbr: "SPM", badge: "60 Items · 15-20 min",
+    dimensions: ["Fluid Intelligence", "Abstract Reasoning", "Cognitive Performance"],
+    what: "Developed by John C. Raven in 1938, the SPM measures fluid intelligence and abstract reasoning through visual pattern recognition. It is culture-fair - requiring no language, educational or cultural background.",
+    how: "Wing uses SPM scores to show the cognitive performance impact of mental health state - individually and at group level. A unique feature no competitor offers.",
+    unique: "The combination of DASS-21 + SPM allows Wing to demonstrate - scientifically - how depression, anxiety and stress affect an employee's ability to think clearly, reason and make decisions.",
+    validation: "One of the most extensively validated cognitive assessments in existence. Used in occupational testing globally. Culture-fair: validated across education levels, ages and cultural backgrounds."
+  }
+];
+
+const conditions = [
+  {
+    name: "Depression", prevalence: "1 in 8", prevLabel: "Irish adults affected",
+    color: "#028090",
+    desc: "The most costly mental health condition in the workplace. Associated with significant cognitive impairment, loss of motivation, physical symptoms and - in severe cases - suicidal ideation. Often goes unrecognised because sufferers normalise symptoms.",
+    how: "DASS-21 Depression subscale (7 items) measures dysphoria, hopelessness, devaluation of life, self-deprecation, lack of interest, anhedonia and inertia. SPM detects associated cognitive decline. Rosenberg captures accompanying self-worth impact. Behavioural Activation interventions specifically target depression."
+  },
+  {
+    name: "Anxiety", prevalence: "1 in 6", prevLabel: "Irish adults affected",
+    color: "#e07b00",
+    desc: "The most common mental health condition in Irish workplaces. Ranges from generalised anxiety to panic and phobia. Often co-occurs with depression. Significantly impairs decision-making, concentration and interpersonal functioning.",
+    how: "DASS-21 Anxiety subscale (7 items) measures autonomic arousal, skeletal musculature effects, situational anxiety and subjective experience of anxious affect. Early detection enables targeted intervention before anxiety becomes entrenched."
+  },
+  {
+    name: "Stress", prevalence: "74%", prevLabel: "of Irish workers report work-related stress",
+    color: "#c05000",
+    desc: "The most prevalent and underaddressed condition in workplace mental health. Often dismissed as 'normal' by sufferers and employers. Chronic stress precedes both depression and anxiety - making it the most important early intervention target.",
+    how: "DASS-21 Stress subscale (7 items) measures difficulty relaxing, nervous arousal, being easily upset or agitated, irritability and impatience. Wing's early warning signal is most sensitive to stress deterioration - enabling preventive intervention before clinical thresholds are crossed."
+  },
+  {
+    name: "Low Self-Esteem", prevalence: "Significant", prevLabel: "predictor of depression & anxiety",
+    color: "#5a3e8a",
+    desc: "Not typically assessed in workplace mental health tools. Low self-esteem is a vulnerability factor - it amplifies stress responses, reduces help-seeking and is associated with poorer recovery from depression. Particularly relevant in high-performance, hierarchical and male-dominated professions.",
+    how: "Rosenberg Self-Esteem Scale captures global self-worth separately from mood state. This allows Wing to identify employees whose distress is driven by self-worth issues rather than situational stress - enabling more targeted and effective interventions."
+  },
+  {
+    name: "Cognitive Impairment from Mental Health", prevalence: "Measurable", prevLabel: "across all major mental health conditions",
+    color: "#016b7a",
+    desc: "Depression, anxiety and chronic stress all measurably impair cognitive performance - affecting memory, attention, decision-making speed and abstract reasoning. This is invisible to most employers yet directly impacts safety, quality and productivity.",
+    how: "SPM provides an objective, culture-fair measure of fluid intelligence and abstract reasoning. Wing is the only workplace mental health platform that measures both mental health state and cognitive performance simultaneously - connecting wellbeing investment to operational performance."
+  },
+  {
+    name: "Burnout", prevalence: "54%", prevLabel: "of Irish mid-level employees affected",
+    color: "#7a1616",
+    desc: "Burnout is classified by WHO as an occupational phenomenon characterised by exhaustion, cynicism and reduced professional efficacy. It is the end-stage of chronic workplace stress and is strongly associated with absenteeism, turnover and - in healthcare - patient safety incidents.",
+    how: "DASS-21 Stress subscale, combined with longitudinal tracking, enables early detection of the burnout trajectory before it becomes entrenched. Wing's early warning signal fires before burnout reaches clinical threshold - enabling preventive action."
+  }
+];
+
+// ══════════════════════════════════════════════════════════════
+// TAB 4 DATA - PSYCHOLOGY TECHNIQUES
+// ══════════════════════════════════════════════════════════════
+const psychTechniques = [
+  {
+    icon: "🎯",
+    name: "Behavioural Activation",
+    abbr: "BA - Primary intervention framework",
+    desc: "Behavioural Activation is one of the most robustly evidence-based psychological interventions for depression. It works by helping people re-engage with activities that provide a sense of accomplishment, pleasure or meaning - breaking the withdrawal cycle that maintains low mood. Crucially, it is action-oriented rather than insight-oriented, making it far more acceptable in male-dominated and frontline professions than therapy-based approaches.",
+    wing: "<strong>Wing uses BA as its primary intervention framework</strong> because it fits the identity, time constraints and cultural norms of frontline workers. Activities are profession-specific - practical, achievable and framed around the user's actual working life, not a wellness programme.",
+    evidence: "BA is as effective as CBT for depression in multiple RCTs. Particularly effective for populations that resist insight-oriented approaches."
+  },
+  {
+    icon: "🧩",
+    name: "Cognitive Behavioural Therapy Principles",
+    abbr: "CBT - Foundational framework",
+    desc: "CBT is the gold-standard psychological treatment for depression and anxiety. Wing does not deliver therapy - but embeds CBT principles into its psychoeducation content and AI conversation layer, helping users identify cognitive patterns (e.g. catastrophising, black-and-white thinking) that maintain distress.",
+    wing: "<strong>Wing uses CBT-informed psychoeducation</strong> to help users understand the connection between thoughts, feelings and behaviours - presented in plain, profession-specific language rather than clinical terminology.",
+    evidence: "CBT has the strongest evidence base of any psychological intervention for depression and anxiety (Cochrane reviews, multiple meta-analyses)."
+  },
+  {
+    icon: "📶",
+    name: "Stepped Care Model",
+    abbr: "SCM - Triage and referral framework",
+    desc: "Stepped Care is the WHO and NICE-recommended model for mental health service delivery. It matches the intensity of support to the severity of need - ensuring people get the right level of care at the right time, neither under-treated nor over-referred.",
+    wing: "<strong>Wing's four support levels (0–3) implement the Stepped Care model</strong> digitally and at scale - providing the first automated, clinically-grounded triage tool available to every employee regardless of their role, industry or location.",
+    evidence: "Stepped Care is the recommended framework in NICE guidelines, WHO Mental Health Action Plan and HSE mental health strategy."
+  },
+  {
+    icon: "💡",
+    name: "Psychoeducation",
+    abbr: "PE - Awareness and normalisation",
+    desc: "Psychoeducation is the provision of information about mental health conditions, their causes, their symptoms and their treatments. It is a core component of CBT, BA and most evidence-based interventions. In workplace settings, psychoeducation is particularly valuable for reducing stigma and increasing help-seeking.",
+    wing: "<strong>Wing delivers profession-specific psychoeducation</strong> - explaining what depression, anxiety and stress look like in each occupational context, normalising help-seeking and increasing self-awareness without requiring clinical engagement.",
+    evidence: "Psychoeducation alone significantly increases help-seeking behaviour and reduces stigma in workplace populations (multiple systematic reviews)."
+  },
+  {
+    icon: "🔄",
+    name: "Motivational Principles",
+    abbr: "MI-informed - Engagement framework",
+    desc: "Motivational Interviewing (MI) is an evidence-based counselling approach that helps people find their own reasons for change. Wing's conversational AI entry layer is informed by MI principles - meeting users where they are, not where the platform wants them to be, and using their own language and priorities to engage them.",
+    wing: "<strong>Wing's AI entry conversation uses MI-informed principles</strong> - open questions, reflective listening, affirmation of strengths - to earn trust before any clinical assessment begins. This is the critical bridge between 'I opened the app' and 'I completed the assessment.'",
+    evidence: "MI principles significantly increase engagement with health behaviour change programmes - particularly among male and resistant populations."
+  },
+  {
+    icon: "🌱",
+    name: "Positive Psychology & PERMA",
+    abbr: "PP - Resilience and wellbeing framework",
+    desc: "Positive psychology focuses on building strengths and resilience rather than solely treating deficits. The PERMA framework (Positive emotions, Engagement, Relationships, Meaning, Achievement) provides a structure for wellbeing interventions that go beyond symptom reduction to build lasting psychological health.",
+    wing: "<strong>Wing's Level 0 and Level 1 interventions are grounded in positive psychology</strong> - building resilience, connection and meaning for employees who are not yet in distress. This preventive layer is where the greatest organisational ROI is generated.",
+    evidence: "Positive psychology interventions show significant effects on wellbeing and resilience in workplace populations (meta-analyses, 2021-2024)."
+  }
+];
+
+// ══════════════════════════════════════════════════════════════
+// TAB 5 DATA - SUPPORT LEVELS
+// ══════════════════════════════════════════════════════════════
+const supportLevels = [
+  {
+    num: 0, cls: "l0", title: "You're Doing Well", subtitle: "Maintain and build resilience",
+    trigger: "DASS-21 Normal range · Rosenberg Healthy · SPM Baseline",
+    what: "Scores are within healthy ranges across all three instruments. No clinical concern identified. This is the majority of employees at any given time.",
+    resources: [
+      { name:"Continued Check-In", detail:"Monthly reassessment prompt to track over time" },
+      { name:"Resilience Building Content", detail:"PERMA-based wellbeing activities" },
+      { name:"Sleep & Physical Activity Modules", detail:"Maintenance and prevention focus" }
+    ],
+    action: "<strong>Wing's response:</strong> Affirm the user's wellbeing. Provide positive psychology content to build resilience. Set next check-in prompt. No referral needed."
+  },
+  {
+    num: 1, cls: "l1", title: "Some Stress Building", subtitle: "Self-directed support recommended",
+    trigger: "DASS-21 Mild range on one or more subscales",
+    what: "Mild elevations detected on one or more DASS-21 subscales. Not yet at clinical threshold but trending in a concerning direction. Self-directed intervention is appropriate and likely effective at this stage.",
+    resources: [
+      { name:"Behavioural Activation Exercises", detail:"Profession-specific, 5–10 minute activities" },
+      { name:"Psychoeducation Modules", detail:"Understanding what's happening and why" },
+      { name:"Sleep Optimisation Module", detail:"If sleep disruption is detected" },
+      { name:"Fortnightly Reassessment", detail:"Closer monitoring to track trajectory" }
+    ],
+    action: "<strong>Wing's response:</strong> Deliver targeted profession-specific BA activities. Psychoeducation on identified dimension (stress / anxiety / depression). Increase reassessment frequency to fortnightly."
+  },
+  {
+    num: 2, cls: "l2", title: "Worth Paying Attention To", subtitle: "Consider speaking to your GP",
+    trigger: "DASS-21 Moderate range · Rosenberg Low · SPM Notable decline",
+    what: "Moderate scores on one or more instruments. This level warrants professional attention - specifically a conversation with a GP who can assess further and refer if needed. Many people at this level respond well to early intervention.",
+    resources: [
+      { name:"Your GP", detail:"First point of contact - can refer to psychology services" },
+      { name:"HSE MyMind", detail:"mymind.ie · Online therapy - low-cost, fast access" },
+      { name:"AWARE", detail:"aware.ie · 1800 804 848 · Depression and bipolar support" },
+      { name:"Samaritans", detail:"samaritans.org · 116 123 · 24/7 · Free" }
+    ],
+    action: "<strong>Wing's response:</strong> Plain-language explanation that scores suggest speaking to someone would be helpful. Specific guidance on GP conversation. Direct links to Irish services. Weekly reassessment. Manager amber signal if group threshold met."
+  },
+  {
+    num: 3, cls: "l3", title: "Professional Support Would Help", subtitle: "Please reach out - specific steps below",
+    trigger: "DASS-21 Severe/Extremely Severe · Rosenberg Very Low · Crisis indicators",
+    what: "Scores indicate significant distress that would benefit from professional mental health support. This is not a crisis in all cases - but it is a clear signal that self-directed support is insufficient and professional input is needed as soon as possible.",
+    resources: [
+      { name:"Samaritans", detail:"116 123 · Free · 24/7 · samaritans.org" },
+      { name:"Crisis Text Line Ireland", detail:"Text HELLO to 50808 · Free · 24/7" },
+      { name:"HSE Mental Health Services", detail:"hse.ie/mentalhealth · GP referral pathway" },
+      { name:"Pieta House", detail:"1800 247 247 · pieta.ie · Suicide & self-harm crisis" },
+      { name:"Aware", detail:"1800 804 848 · aware.ie · Depression support" },
+      { name:"Your GP", detail:"Immediate appointment - explain urgency" }
+    ],
+    action: "<strong>Wing's response:</strong> Hard-coded crisis protocol triggers. Specific Irish services displayed immediately with phone numbers and links. Clear instruction: 'Please speak to someone today.' No AI-governed content at this level - deterministic safety protocol only."
+  }
+];
+
+// ══════════════════════════════════════════════════════════════
+// TAB 6 DATA - ARCHITECTURE
+// ══════════════════════════════════════════════════════════════
+const archLayers = [
+  {
+    num: 1, name: "User Interface Layer", role: "What the employee sees and interacts with",
+    components: [
+      { name:"Web-First Progressive Web App", desc:"Browser-based, mobile-optimised. No download required. Works on any device." },
+      { name:"Conversational AI Interface", desc:"Profession-aware chat interface. LLM-powered. Entry layer before assessment." },
+      { name:"Assessment UI", desc:"Clinically validated instruments delivered conversationally. No clinical framing visible to user." },
+      { name:"Personal Dashboard", desc:"Score trajectory, progress narrative, intervention library. User-facing only." }
+    ],
+    flow: "<strong>User opens Wing</strong> → selects profession category → enters AI conversation → assessment embedded in conversation → receives recommendation → accesses intervention library → views personal dashboard."
+  },
+  {
+    num: 2, name: "AI & LLM Layer", role: "Intelligence, personalisation and language",
+    components: [
+      { name:"Profession-Aware Language Model", desc:"LLM fine-tuned or prompted for occupational context. Drives entry conversation and question framing." },
+      { name:"Adaptive Assessment Engine", desc:"Determines assessment depth based on initial responses. Sequences DASS-21, Rosenberg and SPM adaptively." },
+      { name:"Recommendation Engine", desc:"Combines instrument scores to generate support level recommendation. Rule-based at clinical thresholds." },
+      { name:"Progress Narrative Generator", desc:"Generates plain-language summaries of longitudinal score trends for individual users." }
+    ],
+    flow: "<strong>Clinical logic is hard-coded and rule-based</strong> at scoring and triage thresholds. LLM governs language, framing and conversation only. Crisis protocol is deterministic - LLM cannot override clinical safety rules."
+  },
+  {
+    num: 3, name: "Clinical Assessment Engine", role: "Gold-standard validated scoring",
+    components: [
+      { name:"DASS-21 Scoring Module", desc:"Original validated 21-item instrument. Scores Depression, Anxiety and Stress subscales. Norm-referenced." },
+      { name:"Rosenberg Scoring Module", desc:"10-item global self-esteem scale. Validated thresholds for low, normal and high self-esteem." },
+      { name:"SPM Scoring Module", desc:"60-item progressive matrices. Culture-fair fluid intelligence scoring. Baseline and trend comparison." },
+      { name:"Combined Score Interpreter", desc:"Combines all instrument scores to determine support level (0–3). Rule-based, not AI-governed." }
+    ],
+    flow: "<strong>Scoring is deterministic</strong> - not AI-governed. Each instrument uses its validated scoring algorithm. Combined interpreter uses fixed clinical thresholds. 100% concordance with manual psychologist scoring validated on 150 users."
+  },
+  {
+    num: 4, name: "Anonymity & Privacy Layer", role: "Zero identity architecture",
+    components: [
+      { name:"Private Key System", desc:"User-generated key held only by user. No employer or Wing database can link key to identity." },
+      { name:"Age Band Processing", desc:"Exact age converted to band at input. Exact age never stored." },
+      { name:"Group Aggregation Engine", desc:"Individual data aggregated to group level before employer access. Minimum threshold enforced." },
+      { name:"Outlier Suppression Module", desc:"Critical individual scores excluded from group aggregates. Triggers general team prompt instead." }
+    ],
+    flow: "<strong>Individual data never reaches employer view</strong>. Aggregation occurs server-side before dashboard population. Minimum group threshold is hard-coded - cannot be configured or overridden by employer admin."
+  },
+  {
+    num: 5, name: "Employer Intelligence Layer", role: "Organisational insight without individual exposure",
+    components: [
+      { name:"Group Trend Dashboard", desc:"Anonymised DASS-21 and SPM scores by team/department over time. Rolling window aggregation." },
+      { name:"Early Warning Engine", desc:"Detects consistent score decline across periods. Generates plain-language employer alert." },
+      { name:"Intervention Effectiveness Module", desc:"Before/after score comparison following employer-defined intervention periods." },
+      { name:"Manager Signal Engine", desc:"Traffic light output for line managers. Fires only above minimum group threshold." }
+    ],
+    flow: "<strong>Employer sees only aggregated, time-windowed, threshold-gated data</strong>. No individual scores, no timing metadata, no demographic combinations that could re-identify. All employer views are read-only - no employer can modify or delete user data."
+  },
+  {
+    num: 6, name: "Clinical Safety & Governance Layer", role: "Non-negotiable safeguards",
+    components: [
+      { name:"Crisis Protocol Engine", desc:"Hard-coded. Triggers on critical DASS-21 thresholds. Displays Irish crisis resources immediately. Cannot be disabled." },
+      { name:"AI Guardrails System", desc:"Validates all LLM outputs against safe messaging guidelines. Blocks diagnosis language, outcome guarantees, advice substituting for professional care." },
+      { name:"Clinical Advisory Review Process", desc:"Named psychologists review all assessment framing, intervention content and escalation thresholds on defined review cycle." },
+      { name:"GDPR & AI Act Compliance Documentation", desc:"DPIA, AI Act risk classification, no-behavioural-monitoring certification. Legal basis for processing established." }
+    ],
+    flow: "<strong>Safety layer cannot be modified by AI, employer configuration or user preference</strong>. Crisis protocol is deterministic. Guardrails run on every LLM output before display. Compliance documentation maintained and reviewed quarterly."
+  }
+];
+
+// ══════════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════════════════════
+
+// TAB 1 - NEEDS TABLE
+let currentAudience = 'all', currentSearch = '';
+
+function renderNeeds(data) {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  data.forEach(row => {
+    const audClass = { employee:'aud-employee', employer:'aud-employer', system:'aud-system' }[row.audience];
+    const audLabel = { employee:'Employee', employer:'Employer', system:'System' }[row.audience];
+    const tr = document.createElement('tr');
+    tr.className = 'main-row';
+    tr.dataset.audience = row.audience;
+    tr.innerHTML = `
+      <td><span class="un-badge">${row.id}</span></td>
+      <td>
+        <div class="need-title">${row.title} <span class="audience-badge ${audClass}">${audLabel}</span></div>
+        <div class="need-desc">${row.desc}</div>
+        <span class="chevron">▼</span>
+      </td>
+      <td>
+        <div class="feature-tags">${row.features.map(f=>`<span class="ftag">${f.code}</span>`).join('')}</div>
+        <div class="feature-names">${row.features.map(f=>f.name).join(' · ')}</div>
+      </td>
+      <td>
+        <div class="benefit-text">${row.benefit}</div>
+        <div class="benefit-evidence">📚 ${row.evidence}</div>
+      </td>`;
+
+    const exp = document.createElement('tr');
+    exp.className = 'expand-row';
+    exp.innerHTML = `<td colspan="4"><div class="expand-content">
+      <div class="expand-title">Feature Details</div>
+      <div class="fdetail-grid">${row.features.map(f=>`
+        <div class="fdetail-card">
+          <div class="fdetail-code">${f.code}</div>
+          <div class="fdetail-name">${f.name}</div>
+          <div class="fdetail-desc">${f.desc}</div>
+          <div class="fdetail-evidence">📚 ${f.evidence}</div>
+        </div>`).join('')}
+      </div>
+    </div></td>`;
+
+    tr.addEventListener('click', () => {
+      const isExp = tr.classList.contains('expanded');
+      document.querySelectorAll('.main-row.expanded').forEach(r=>r.classList.remove('expanded'));
+      document.querySelectorAll('.expand-row.show').forEach(r=>r.classList.remove('show'));
+      if (!isExp) { tr.classList.add('expanded'); exp.classList.add('show'); }
+    });
+
+    tbody.appendChild(tr);
+    tbody.appendChild(exp);
+  });
+  document.getElementById('visibleCount').textContent = data.length;
+  document.getElementById('noResults').style.display = data.length === 0 ? 'block' : 'none';
+}
+
+function filterNeeds() {
+  let f = needsData;
+  if (currentAudience !== 'all') f = f.filter(r => r.audience === currentAudience);
+  if (currentSearch.trim()) {
+    const s = currentSearch.toLowerCase();
+    f = f.filter(r => r.title.toLowerCase().includes(s) || r.desc.toLowerCase().includes(s) || r.benefit.toLowerCase().includes(s) || r.features.some(x => x.name.toLowerCase().includes(s) || x.code.toLowerCase().includes(s)));
+  }
+  renderNeeds(f);
+}
+
+function filterAudience(aud, btn) {
+  currentAudience = aud;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterNeeds();
+}
+
+function clearFilters() {
+  currentAudience = 'all'; currentSearch = '';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn')[0].classList.add('active');
+  filterNeeds();
+}
+
+document.getElementById('searchInput').addEventListener('input', e => { currentSearch = e.target.value; filterNeeds(); });
+
+// TAB 2 - FEATURE LIBRARY
+function renderFeatures() {
+  const statusLabel = { build:'', planned:'', exists:'' };
+  const container = document.getElementById('featureLibrary');
+  container.innerHTML = featureLayers.map(layer => `
+    <div class="layer-section">
+      <div class="layer-header">
+        <span style="font-size:22px">${layer.icon}</span>
+        <div class="layer-title">${layer.name}</div>
+        <span class="layer-count">${layer.count} features</span>
+        <span class="layer-desc">${layer.desc}</span>
+      </div>
+      <div class="features-grid">
+        ${layer.features.map(f => `
+          <div class="feature-card">
+            <div class="fc-header">
+              <span class="fc-code">${f.code}</span>
+              <div class="fc-name">${f.name}</div>
+            </div>
+            <div class="fc-desc">${f.desc}</div>
+            <div class="fc-evidence">📚 ${f.evidence}</div>
+            <div><span class="fc-status status-${f.status}">${statusLabel[f.status]}</span></div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// TAB 3 - ASSESSMENTS
+function renderAssessments() {
+  document.getElementById('assessmentGrid').innerHTML = assessments.map(a => `
+    <div class="assessment-card">
+      <div class="ac-header">
+        <div>
+          <div class="ac-name">${a.name}</div>
+          <div class="ac-short">${a.abbr}</div>
+        </div>
+        <span class="ac-badge">${a.badge}</span>
+      </div>
+      <div class="ac-body">
+        <div class="ac-section">
+          <div class="ac-section-title">Dimensions Measured</div>
+          <div class="dimension-tags">${a.dimensions.map(d=>`<span class="dim-tag">${d}</span>`).join('')}</div>
+        </div>
+        <div class="ac-section">
+          <div class="ac-section-title">What It Measures</div>
+          <div class="ac-section-text">${a.what}</div>
+        </div>
+        <div class="ac-section">
+          <div class="ac-section-title">How Wing Uses It</div>
+          <div class="ac-section-text">${a.how}</div>
+        </div>
+        <div class="ac-section">
+          <div class="ac-section-title">What Makes It Unique In Wing</div>
+          <div class="ac-section-text" style="color:var(--teal);font-weight:500">${a.unique}</div>
+        </div>
+        <div class="ac-section">
+          <div class="ac-section-title">Validation</div>
+          <div class="ac-section-text">${a.validation}</div>
+        </div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('conditionGrid').innerHTML = conditions.map(c => `
+    <div class="condition-card" style="border-top-color:${c.color}">
+      <div class="cond-name">${c.name}</div>
+      <div class="cond-prevalence" style="color:${c.color}">${c.prevalence}</div>
+      <div class="cond-prev-label">${c.prevLabel}</div>
+      <div class="cond-desc">${c.desc}</div>
+      <div class="ac-section-title" style="font-size:11px;text-transform:uppercase;letter-spacing:0.6px;color:var(--muted);font-weight:600;margin-bottom:5px">How Wing Addresses It</div>
+      <div class="cond-how">${c.how}</div>
+    </div>`).join('');
+}
+
+// TAB 4 - PSYCHOLOGY
+function renderPsych() {
+  document.getElementById('psychGrid').innerHTML = psychTechniques.map(p => `
+    <div class="psych-card">
+      <div class="psych-icon">${p.icon}</div>
+      <div class="psych-name">${p.name}</div>
+      <div class="psych-abbr">${p.abbr}</div>
+      <div class="psych-desc">${p.desc}</div>
+      <div class="psych-wing">${p.wing}</div>
+      <div class="psych-evidence">📚 ${p.evidence}</div>
+    </div>`).join('');
+}
+
+// TAB 5 - SUPPORT LEVELS
+function renderLevels() {
+  document.getElementById('levelCards').innerHTML = supportLevels.map(l => `
+    <div class="level-card ${l.cls}">
+      <div class="level-header">
+        <div class="level-num">${l.num}</div>
+        <div>
+          <div class="level-title">Level ${l.num} - ${l.title}</div>
+          <div class="level-subtitle">${l.subtitle}</div>
+        </div>
+        <div class="level-trigger">${l.trigger}</div>
+      </div>
+      <div class="level-body">
+        <div>
+          <div class="level-section-title">Clinical Picture</div>
+          <div class="level-what">${l.what}</div>
+        </div>
+        <div>
+          <div class="level-section-title">Resources & Services</div>
+          <ul class="resource-list">${l.resources.map(r=>`<li><span class="resource-name">${r.name}</span><span class="resource-detail">${r.detail}</span></li>`).join('')}</ul>
+        </div>
+        <div>
+          <div class="level-section-title">Wing's Response</div>
+          <div class="wing-action">${l.action}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// TAB 6 - ARCHITECTURE
+function renderArch() {
+  document.getElementById('archGrid').innerHTML = archLayers.map(l => `
+    <div class="arch-layer">
+      <div class="arch-layer-header">
+        <div class="arch-layer-num">${l.num}</div>
+        <div class="arch-layer-name">${l.name}</div>
+        <div class="arch-layer-role">${l.role}</div>
+      </div>
+      <div class="arch-layer-body">
+        <div class="arch-components">${l.components.map(c=>`
+          <div class="arch-comp">
+            <div class="arch-comp-name">${c.name}</div>
+            <div class="arch-comp-desc">${c.desc}</div>
+          </div>`).join('')}
+        </div>
+        <div class="arch-flow">🔄 <strong>Data Flow:</strong> ${l.flow}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── INIT ──
+renderNeeds(needsData);
+renderFeatures();
+renderAssessments();
+renderPsych();
+renderLevels();
+renderArch();
+</script>
+</body>
+</html>
